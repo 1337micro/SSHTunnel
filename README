@@ -62,6 +62,7 @@ server_type = 5
 # The port defaults to 1080 but I've stated it here for clarity
 server_port = 1080
 
+#End____________________________________________________________
 
 Usage:
     You need to have a server that allows you to ssh into it on port 22.

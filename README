@@ -3,59 +3,27 @@ Purpose: Tunnel your browser or other applications through a remote server with 
 
 Install:
 On debian-based systems:
-
-you can then execute the command python3 SSHTunnel.py to run the application
+    dpkg -b 'path_to_directory_containing_DEBIAN_and_usr_folders'
+    dpkg -i sshtunnel.deb
+you can then execute the command python3 /usr/bin/SSHTunnel.py to run the application
 
 INSTALLATION on other systems, or alternate installation for failed installs:
-    Windows is not supported at all at this time Mac is not supported but might
-    work if you follow the requirements section
+    Windows is not supported at all at this time, Neither is Mac.
     
-
-USAGE:
-    You need to have a server that allows you to ssh into it.
-    
-    python3 SSHTunnel.py press "I have an ssh-capable server" Enter the username
-    you use to log into your server Enter the server ip Enter the ABSOLUTE PATH
-    of the Key file IF you need one to login (the key file will need to be sudo
-    chmod 400 in some cases, the application will not do this for you)
-        If you don't need a key to login just leave it blank
-        
-    Press Connect Pay close attention to your terminal, you may be required to
-    enter information before the application can continue IF you get an error
-    message please check that your information is right and that your identity
-    file has the right permissions ___ In the next window you will see the SOCKS
-    proxy information, you can either enter this information manually into your
-    browser settings or press one of the buttons
-        to launch a special instance of the browser. WARNING, if you use the
-        buttons you current firefox or chrome windows MAY BE KILLED, please save
-        your work! This special instance will not change your browser's network
-        settings on your main profile
-    
-    You can also type a terminal command to tunnel any of your favorite
-    applications (especially those which don't allow you to modify proxy
-    settings)
-        For instance, you can type irssi to launch an instance of irssi that is
-        tunneled through your ssh server
-    
-    
-    
-
-
-REQUIREMENTS:
-    sudo python3 setup.py attempts to install the necessary requirements for
-    debian-based distributions
-
-    In other cases, or in cases of failed installs: 1.0) Install the following
-    requirements:
-        tsocks (prefer version 1.8 http://tsocks.sourceforge.net/download.php)
-        python3 (prefer version 3.2+, MUST BE PYTHON 3) python3-pyside (version
-        shouldn't matter)
-    1.1) If it hasn't been done already, youll need to create an alias for
-    tsocks, such that when you type tsocks in the terminal it will open tsocks
-    
-    
-    2) sudo gedit /etc/tsocks.conf and replace the entire file with the
-    following text:
+    For all other linux distros you must:
+    1)
+        Install the following dependencies:
+        tsocks v1.8+ recommended (http://tsocks.sourceforge.net/download.php OR try your distro repos!),
+        python3, 
+        python3-pyside, 
+        openSSH, 
+        firefox and/or google-chrome (optional but HIGHLY recommended)
+    2)
+        If it hasn't been done already, youll need to create an alias (nano .bashrc) for
+        tsocks, such that when you type tsocks in the terminal it will refer to the correct program
+    3)
+        sudo gedit /etc/tsocks.conf and replace the entire file with the
+        following text:
 # This is the configuration for libtsocks (transparent socks) Lines beginning
 # with # and blank lines are ignored# The basic idea is to specify:
 #       - Local subnets - Networks that can be accessed directly without
@@ -93,10 +61,34 @@ server_type = 5
 # The port defaults to 1080 but I've stated it here for clarity
 server_port = 1080
 
-#___________________________________________________________________________ END
-#OF TEXT IS ONE LINE ABOVE
 
 
+        
+    
+USAGE:
+    You need to have a server that allows you to ssh into it on port 22.
+    
+    python3 /usr/bin/SSHTunnel.py 
+    Press the button which most describes your situation:
+    
+        If you have a VPS or server:
+            Fill out the info on the next page and
+            Press Connect. Pay close attention to your terminal, 
+            you may be required to enter additional information to succesfuly connect.
+            
+            In the next window you will see the SOCKS
+            proxy information, you can either enter this information manually into your
+            browser settings or press one of the buttons
+            to launch a special instance of the browser. 
+    
+            You can also type a terminal command to tunnel any of your favorite
+            applications (especially those which don't allow you to modify proxy
+            settings)
+        
+        If you don't have a VPS or server:
+            A webview will be shown, please purchase one and return to the form later
+            (disclaimer: these are affiliate links)
+        
 
 Tested on:
     ubuntu 12.04+ python 3.2+ tsocks 1.8

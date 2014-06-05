@@ -1,0 +1,9 @@
+sudo setup.py attempts to install the necessary requirements
+
+If it fails you must install the following packages:
+
+tsocks
+python3.4
+python3-pyside
+
+you can then execute the command python3.4 SSHTunnel.py

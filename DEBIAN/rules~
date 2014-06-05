@@ -1,0 +1,7 @@
+#!/usr/bin/make -f
+%:
+	dh $@ --with python3
+override_dh_auto_install:
+	$(MAKE) DESTDIR=$$(pwd)/debian/sshtunnel prefix=/usr install
+install:
+	python3 setup.py

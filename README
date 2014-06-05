@@ -20,7 +20,7 @@ INSTALLATION on other systems, or alternate installation for failed installs:
         firefox and/or google-chrome (optional but HIGHLY recommended)
     2)
         If it hasn't been done already, 
-        youll need to create an alias (nano .bashrc) for tsocks, 
+        you'll need to create an alias (nano .bashrc) for tsocks, 
         such that when you type tsocks in the terminal it will refer to the correct program
     3)
         sudo gedit /etc/tsocks.conf and replace the entire file with the

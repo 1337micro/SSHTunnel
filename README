@@ -5,7 +5,7 @@ Install:
 On debian-based systems:
     dpkg -b 'path_to_directory_containing_DEBIAN_and_usr_folders'
     dpkg -i sshtunnel.deb
-you can then execute the command python3 /usr/bin/SSHTunnel.py to run the application
+    You can then execute the command python3 /usr/bin/SSHTunnel.py to run the application
 
 INSTALLATION on other systems, or alternate installation for failed installs:
     Windows is not supported at all at this time, Neither is Mac.
@@ -61,9 +61,6 @@ server_type = 5
 # The port defaults to 1080 but I've stated it here for clarity
 server_port = 1080
 
-
-
-        
     
 USAGE:
     You need to have a server that allows you to ssh into it on port 22.

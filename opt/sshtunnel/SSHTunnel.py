@@ -19,11 +19,12 @@ import shutil #to remove an entire directory tree (i.e. any non empty folder)
 import subprocess
 from subprocess import CalledProcessError
 from subprocess import Popen
+from subprocess import check_call
 from subprocess import PIPE
 
 import getpass # To get the username
 
-
+import shlex
 
 import traceback
 
@@ -37,7 +38,10 @@ class StartingWindow(QDialog):
     """
     def __init__(self, parent= None):
         super(StartingWindow, self).__init__(parent)
-        
+        if LOGNAME == 'root':
+            print("DO NOT RUN THE APPLICATION AS ROOT")
+            sys.exit(0)
+            
         # Create a Label and show it
         self.label = QLabel("<em>Hide your identity online</em>")
         
@@ -111,30 +115,38 @@ class SSHCredentialsDialog(QDialog):
         self.user = QLineEdit("")
         self.server_prompt = QLabel("Server IP:")
         self.server = QLineEdit("")
-        self.key_prompt = QLabel("ABSOLUTE path of the key file, blank if none required. (i.e.: if on Desktop, /home/" + LOGNAME + "/Desktop/keyfile , and NOT: Desktop/keyfile)")
+        self.key_prompt = QLabel("ABSOLUTE path of the key file, blank if using password authentication")
         self.key = QLineEdit("")  
         self.sumbit = QPushButton("Sumbit and Connect")#Fowards the port 1080 locally and turns the ssh client into a SOCKS Proxy
+        self.password_prompt = QLabel("Password: (blank if using key file authentication)")
+        self.password = QLineEdit("")
+        self.password.setEchoMode(QLineEdit.Password)
         
-        
-        
-        
-        
+        #Create folder sshtunnel if it doesn't already exist
+        os.chdir("/home/" + LOGNAME + "/.cache/")
+        list_of_files = os.listdir()
+        if "sshtunnel" not in list_of_files:
+            subprocess.call(['mkdir', 'sshtunnel'])
+       
         
         ##Retreive previously entered info
-        os.chdir("/home/" + LOGNAME +"/.local/share")
-        list_of_folders = os.listdir()
-        for folder in list_of_folders:
-            if "SSHTunnel" in folder:
-                os.chdir("SSHTunnel/")
-                credentials = open("SSHTunnelCredentials", "r")
-                self.user = QLineEdit(credentials.readline()[0:-1])#Cut off the \n at then end
-                self.server = QLineEdit(credentials.readline()[0:-1])
-                self.key = QLineEdit(credentials.readline()[0:-1])
-                credentials.close()
-                break
+        os.chdir("/home/" + LOGNAME + "/.cache/sshtunnel/")
+        list_of_files = os.listdir()
+        if "SSHTunnelCredentials" not in list_of_files:
+            #Create the file if it doesn't exist yet
+            subprocess.call(['touch', 'SSHTunnelCredentials'])
+        
+        
+        credentials = open("SSHTunnelCredentials", "r")
+        self.user = QLineEdit(credentials.readline()[0:-1])#Cut off the \n at then end
+        self.server = QLineEdit(credentials.readline()[0:-1])#Cut off the \n at then end
+        self.key = QLineEdit(credentials.readline()[0:-1])#Cut off the \n at then end
+        credentials.close()
         ##
+        
+        
         #
-        self.key.setFixedWidth = 200
+        self.key.setFixedWidth = 500
         ###
         layout = QVBoxLayout()
         layout.addWidget(self.user_prompt)
@@ -143,7 +155,9 @@ class SSHCredentialsDialog(QDialog):
         layout.addWidget(self.server)
         layout.addWidget(self.key_prompt)
         layout.addWidget(self.key)
+        
         layout.addWidget(self.sumbit)
+        
         
         ###
         self.setLayout(layout)
@@ -158,93 +172,31 @@ class SSHCredentialsDialog(QDialog):
         Coverts the ssh client into a SOCKS proxy via Dynamic port fowarding
         """
         try:           
-            self.sshtun = SSHDynamic(self.user.text(), self.server.text(), self.key.text(), 'not_implemented')
+            self.sshtun = SSHDynamic(self.user.text(), self.server.text(), self.key.text(), "NOT IMPLEMENTED")
             LOGNAME = getpass.getuser() # LINUX DEPENDANT, LOGNAME is the current user    
             
-            save_ssh_credentials(self.user.text(),self.server.text(), self.key.text())
+            save_ssh_credentials(self.user.text(),self.server.text(), self.key.text())      
             
-            if self.sshtun.key is not '':
-                try:
-                    Popen(['fuser', '-k', '1080/tcp']) # Kills all tcp on 1080
-                    pobj = Popen(['ssh','-Ctt','-D'+local_port,'-i',str(self.sshtun.key),str(self.sshtun.user) +'@' +str(self.sshtun.server)])
-                    sleep(3)
-                    """
-                    prestdin_time = time.time()
-                    pobj.stdin.write(bytes('yes', 'UTF-8'))#For the initial setup certificate
-                    pobj.stdin.close()
-                    
-                    sys.stdout.flush()
-                    line = pobj.stdout.readline()#Blocking, On bad ip? ISSUE
-                    
-                    
-                    while bytes('Welcome', 'UTF-8') not in line and line != bytes('', 'UTF-8'):
-                        if(time.time() - prestdin_time > 5.0):
-                            raise Exception("Connection taking too long")
-                        sys.stdout.flush()
-                        line = pobj.stdout.readline()
-                    """
-                    print ("If You don't see the usual prompt saying you have succesfully connected then you are NOT CONNECTED\nTry to reconnect in the GUI")
-                    starting_window.ssh_credentials_dialog.hide() #Hide the server form window
-                    starting_window.launchApp_window = LaunchApp()
-                    starting_window.launchApp_window.show()  
-                
-                except Exception as e:
-                    print(str(e) + str(e.args))
-                    
-                    self.errmsg = ErrorMessage("Connection error", str(e))
-                    self.errmsg.show()
-                    
-                
-                
-                """ 
-                ###Not supported in python3.2
-                except subprocess.TimeoutExpired as e:
-                    print(e)
-                    print ("We seem to be connected")
-                    starting_window.ssh_credentials_dialog.hide() #Hide the server form window
-                    starting_window.launchApp_window = LaunchApp()
-                    starting_window.launchApp_window.show()
-                """
+                           
+            Popen(['fuser', '-k', '1080/tcp']) # Kills all tcp on 1080
+            os.system('clear')
             
-            elif self.sshtun.key == '':
-                try:
-                    Popen(['fuser', '-k', '1080/tcp']) # Kills all tcp on 1080
-                    pobj = Popen(['ssh','-Ctt','-D' +local_port,str(self.sshtun.user)+'@'+str(self.sshtun.server)])
-                    sleep(3)
-                    """
-                    prestdin_time = time.time()
-                    pobj.stdin.write(bytes('yes', 'UTF-8'))#For the initial setup certificate
-                    pobj.stdin.close()
-                    
-                    sys.stdout.flush()
-                    line = pobj.stdout.readline()#Blocking, On bad ip? ISSUE
-                    
-                    
-                    while bytes('Welcome', 'UTF-8') not in line and line != bytes('', 'UTF-8'):
-                        if(time.time() - prestdin_time > 5.0):
-                            raise Exception("Connection taking too long")
-                        sys.stdout.flush()
-                        line = pobj.stdout.readline()
-                    """
-                    print ("If You don't see the usual prompt saying you have succesfully connected then you are NOT CONNECTED\nTry to reconnect in the GUI")
-                    starting_window.ssh_credentials_dialog.hide() #Hide the server form window
-                    starting_window.launchApp_window = LaunchApp()
-                    starting_window.launchApp_window.show()  
-                    
-                except Exception as e:
-                    print(str(e))
-                    self.errmsg = ErrorMessage("Connection error", str(e))
-                    self.errmsg.show()
-                """ python3.2 not supported
-                except subprocess.TimeoutExpired as e:
-                    print(e)
-                    print ("We seem to be connected")
-                    starting_window.ssh_credentials_dialog.hide() #Hide the server form window
-                    starting_window.launchApp_window = LaunchApp()
-                    starting_window.launchApp_window.show()
-                """
+            print ("\nIf you do not see some sort of prompt soon then you are NOT CONNECTED\nTry to reconnect with the 'I Have a Server or VPS' button\n")
+            try:
+                if self.sshtun.key is not '': 
+                    pobj = check_call(['ssh','-Ctt','-o', 'GSSAPIAuthentication=no','-o', 'StrictHostKeyChecking=no', '-D'+local_port,'-i',str(self.sshtun.key),str(self.sshtun.user) +'@' +str(self.sshtun.server)], timeout=3.5)
+                elif self.sshtun.key == '':
+                    pobj = check_call(['ssh -Ctt -o GSSAPIAuthentication=no -o StrictHostKeyChecking=no -D' +local_port + " " + shlex.quote(self.sshtun.user)+'@'+str(self.sshtun.server)], timeout=3.5, shell=True)
+                #At this point, the process has exited, so we cannot possibly be connected       
+            except subprocess.TimeoutExpired:
+                #At this point the process has not exited after 3.5 seconds, either the connection is taking long or
+                #we are connected
                 
-            
+                starting_window.ssh_credentials_dialog.hide() #Hide the server form window
+                starting_window.launchApp_window = LaunchApp()
+                starting_window.launchApp_window.show()
+                
+        
         except CalledProcessError as e:
             print(e)
             self.errmsg = ErrorMessage(str(e))
@@ -341,7 +293,7 @@ class LaunchApp(QDialog):
                             "network.proxy.socks_remote_dns" not in prefs_text):
                             #We need to create the profile again
                             print("re-Creating profile SSHTunnel")
-                            os.chdir('/home/'+ str(self.LOGNAME) +'/.mozilla/firefox/')
+                            os.chdir('/home/'+ str(LOGNAME) +'/.mozilla/firefox/')
                             shutil.rmtree(profile_folder_name);
                             self.create_profile_F()
                         else:
@@ -363,8 +315,6 @@ class LaunchApp(QDialog):
         
         subprocess.call(["killall", "firefox"]) #all firefox instance must be killed
         subprocess.check_call(["firefox","-CreateProfile","SSHTunnel"]) #Create a new Profile named SSHTunnel
-        
-        
       
         
         #Navigate to the profile folder:
@@ -483,27 +433,25 @@ def save_ssh_credentials(user,server,key):
     """Save the ssh credentials from the SSHCredentialsDialog so that we can retrieve them later
     Does not save the password since this is in plain text
     """
-    os.chdir("/home/" + LOGNAME +"/.local/share")
-    list_of_folders = os.listdir()
-    for folder in list_of_folders:
-        if "SSHTunnel" in folder:
-            os.chdir("SSHTunnel/")
-            credentials = open("SSHTunnelCredentials", "w")
-            credentials.write(user+"\n")
-            credentials.write(server+"\n")
-            credentials.write(key+"\n")
-            credentials.close()
-            break
-    else:
-        subprocess.call(["mkdir", "SSHTunnel"])
-        os.chdir("SSHTunnel/")
-        credentials = open("SSHTunnelCredentials", "w")
-        credentials.write(user+"\n")
-        credentials.write(server+"\n")
-        credentials.write(key+"\n")
-        credentials.close()
-        
-        
+     #Create folder sshtunnel if it doesn't already exist
+    os.chdir("/home/" + LOGNAME + "/.cache/")
+    list_of_files = os.listdir()
+    if "sshtunnel" not in list_of_files:
+        subprocess.call(['mkdir', 'sshtunnel'])
+    
+    
+    
+    os.chdir("/home/" + LOGNAME + "/.cache/sshtunnel/")
+    list_of_files = os.listdir()
+    if "SSHTunnelCredentials" not in list_of_files:
+        #Create the file if it doesn't exist yet
+        subprocess.call(['touch', 'SSHTunnelCredentials'])
+    
+    credentials = open("SSHTunnelCredentials", "w")
+    credentials.write(user+"\n")
+    credentials.write(server+"\n")
+    credentials.write(key+"\n")
+    credentials.close()
 
 # Mumbo jumbo to start the application:
 app = QApplication(sys.argv)
@@ -516,28 +464,27 @@ app.exec_()
 sys.exit()
 
 
-    ###
-################################################################################____________________________________________________________________
 
 
-#Garbage section starting, continues till end of file:
+
+
+
+#Crapola
 
 """
-class _LaunchProgram():
-    
-    def __init__(self, command, sleep_time=0, end_process_after_sleep =False):
-        
-        self.command = command
-        self.sleep_time = sleep_time
-        self.end_process_after_sleep = end_process_after_sleep
-    def run(self):
-        subprocess.Popen(self.command)
-        sleep(self.sleep_time)
-        if (self.end_process_after_sleep):
-            print("KILL")
-            raise Exception("KILL")
-            
-"""
-
-#python3.4 Dropbox/Failed\ projects/shhtunneling/PySideTut.py
-
+                LINOE 203 177
+                prestdin_time = time.time()
+                pobj.stdin.write(bytes('yes', 'UTF-8'))#For the initial setup certificate
+                pobj.stdin.close()
+                
+                sys.stdout.flush()
+                line = pobj.stdout.readline()#Blocking, On bad ip? ISSUE
+                
+                
+                while bytes('Welcome', 'UTF-8') not in line and line != bytes('', 'UTF-8'):
+                    if(time.time() - prestdin_time > 5.0):
+                        raise Exception("Connection taking too long")
+                    sys.stdout.flush()
+                    line = pobj.stdout.readline()
+                """
+                #

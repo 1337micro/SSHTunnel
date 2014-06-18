@@ -11,7 +11,7 @@ class SSHDynamic(SSHTunnelBaseClass):
         
         Some implementations ideas come from https://help.ubuntu.com/community/SSH/OpenSSH/PortForwarding
     """
-    def __init__(self, user, server, key, program, port=1080):
+    def __init__(self, user, server, key, password, port=1080):
         """ Constructor
             program: The command line argument to be executed. This is generally the program you want to launch with tsocks.
             port: The local port which will be dynamically fowarded to create the SSH tunnel. For now: THE PORT SHOULD BE LEFT AS 1080
@@ -21,7 +21,7 @@ class SSHDynamic(SSHTunnelBaseClass):
         super().__init__(user, server, key)        
         """ Super constructor
         """
-        self.program = program
+        self.password = password
         self.port = port
         
         

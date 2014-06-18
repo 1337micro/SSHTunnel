@@ -71,7 +71,7 @@ server_type = 5
 server_port = 1080"""
 
 print("Installing, please be patient")
-print("If the installation fails you should install 'tsocks' and 'python3-pyside', and replace the /etc/tsocks.conf file with the one provided, provided here for your convienience: \n" + tsocks_text)
+
 
 
 

@@ -1,10 +1,10 @@
 [Desktop Entry]
 Comment=SSHTunnel
-Exec=python3 /usr/bin/SSHTunnel.py
+Exec=python3 /opt/sshtunnel/SSHTunnel.py
 GenericName[en_US]=SSHTunnel
 GenericName=SSHTunnel
-Icon=/usr/share/icons/SSHTunnel.png
-Name[en_US]=SSHTunnel
+Icon=SSHTunnel.png
+Name[en_US]=sshtunnel
 Name=SSHTunnel
 Categories=Utility
 StartupNotify=false

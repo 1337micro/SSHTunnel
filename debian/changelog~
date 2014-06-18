@@ -1,0 +1,14 @@
+sshtunnel (1.0-0ubuntu2) precise; urgency=medium
+
+  * Updating build
+  * 
+  * 
+
+ -- W P <williamap@gmail.com>  Fri, 18 June 2014 02:32:22 -0400
+
+sshtunnel (1.0-0ubuntu1) UNRELEASED; urgency=medium
+  
+  * Initial release. (Closes: #XXXXXX)
+  * 
+
+ -- W P <williamap@gmail.com>  Fri, 16 May 2014 18:24:22 -0400

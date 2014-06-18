@@ -1,0 +1,12 @@
+[Desktop Entry]
+Comment=SSHTunnel
+Exec=python3 /opt/sshtunnel/SSHTunnel.py
+GenericName[en_US]=SSHTunnel
+GenericName=SSHTunnel
+Icon=SSHTunnel.png
+Name[en_US]=SSHTunnel
+Name=SSHTunnel
+Categories=Utility
+StartupNotify=false
+Terminal=true
+Type=Application

@@ -1,0 +1,9 @@
+Package: sshtunnel
+Version: 1.2
+Architecture: all
+Maintainer: WP<williamap@gmail.com>
+Installed-Size: 2
+Depends: tsocks, python3, python3-pyside
+Section: extras
+Priority: optional
+Description: The poor man's VPN: Tunnel your applications to remain anonymous and protect your information online.

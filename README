@@ -5,7 +5,7 @@ Install:
 On debian-based systems:
     dpkg -b 'path_to_directory_containing_DEBIAN_and_usr_folders'
     sudo dpkg -i sshtunnel.deb
-    You can then execute the command python3 /usr/bin/SSHTunnel.py to run the application
+    You can then execute the command python3 /opt/sshtunnel/SSHTunnel.py to run the application
 
 Install on other systems, or alternate installation for failed installs:
     Windows is not supported at all at this time, Neither is Mac.

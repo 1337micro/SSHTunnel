@@ -24,7 +24,7 @@ from subprocess import PIPE
 
 import getpass # To get the username
 
-import shlex
+import shlex #From python3.4
 
 import traceback
 import webbrowser
@@ -97,7 +97,7 @@ class SSHCredentialsDialog(QDialog):
         self.server = QLineEdit("")
         self.key_prompt = QLabel("ABSOLUTE path of the key file, blank if using password authentication")
         self.key = QLineEdit("")  
-        self.sumbit = QPushButton("Sumbit and Connect")#Fowards the port 1080 locally and turns the ssh client into a SOCKS Proxy
+        self.sumbit = QPushButton("Submit and Connect")#Fowards the port 1080 locally and turns the ssh client into a SOCKS Proxy
         self.password_prompt = QLabel("Password: (blank if using key file authentication)")
         self.password = QLineEdit("")
         self.password.setEchoMode(QLineEdit.Password)
@@ -161,13 +161,38 @@ class SSHCredentialsDialog(QDialog):
             Popen(['fuser', '-k', '1080/tcp']) # Kills all tcp on 1080
             os.system('clear')
             
-            print ("\nIf you do not see some sort of prompt soon then you are NOT CONNECTED\nTry to reconnect with the 'I Have a Server or VPS' button\n")
-            try:
-                if self.sshtun.key is not '': 
-                    pobj = check_call(['ssh','-Ctt','-o', 'GSSAPIAuthentication=no','-o', 'StrictHostKeyChecking=no', '-D'+local_port,'-i',str(self.sshtun.key),str(self.sshtun.user) +'@' +str(self.sshtun.server)], timeout=5)
-                elif self.sshtun.key == '':
-                    pobj = check_call(['ssh -Ctt -o GSSAPIAuthentication=no -o StrictHostKeyChecking=no -D' +local_port + " " + shlex.quote(self.sshtun.user)+'@'+str(self.sshtun.server)], timeout=5, shell=True)
-                #At this point, the process has exited, so we cannot possibly be connected       
+            print ("\nIf you do not see some sort of prompt soon then you are NOT CONNECTED\nTry to reconnect with the 'I Have a Server or VPS' button\n\n")
+            
+            if self.sshtun.key is not '': 
+                pobj = Popen(['ssh','-Ctt','-o', 'GSSAPIAuthentication=no','-o', 'StrictHostKeyChecking=no', '-D'+local_port,'-i',str(self.sshtun.key),str(self.sshtun.user) +'@' +str(self.sshtun.server)])
+                c_time = time.time()
+                while (time.time() != (c_time+4)): # pause for 4 seconds
+                    pass
+                if pobj.poll() == None:
+                    #Process hasn't terminated yet, so we are probably connected
+                    starting_window.ssh_credentials_dialog.hide() #Hide the server form window
+                    starting_window.launchApp_window = LaunchApp()
+                    starting_window.launchApp_window.show()
+                else:
+                    #Process terminated so conection failed
+                    print("CONNECTION FAILED")
+                    
+            elif self.sshtun.key == '':
+                pobj = Popen(['ssh -Ctt -o GSSAPIAuthentication=no -o StrictHostKeyChecking=no -D' +local_port + " " + shlex.quote(self.sshtun.user)+'@'+str(self.sshtun.server)], shell=True)
+                c_time = time.time()
+                while (time.time() < (c_time+4)): # pause for 4 seconds
+                    pass
+                if pobj.poll() == None:
+                    #Process hasn't terminated yet, so we are probably connected
+                    starting_window.ssh_credentials_dialog.hide() #Hide the server form window
+                    starting_window.launchApp_window = LaunchApp()
+                    starting_window.launchApp_window.show()
+                else:
+                    #Process terminated so conection failed
+                    print("CONNECTION FAILED")
+            #At this point, the process has exited, so we cannot possibly be connected
+            """
+            Not supported on python3.2
             except subprocess.TimeoutExpired:
                 #At this point the process has not exited after 3.5 seconds, either the connection is taking long or
                 #we are connected
@@ -175,7 +200,7 @@ class SSHCredentialsDialog(QDialog):
                 starting_window.ssh_credentials_dialog.hide() #Hide the server form window
                 starting_window.launchApp_window = LaunchApp()
                 starting_window.launchApp_window.show()
-                
+            """  
         
         except CalledProcessError as e:
             print(e)
@@ -202,7 +227,7 @@ class LaunchApp(QDialog):
         self.firefox = QPushButton("Launch special Firefox instance")
         self.chrome = QPushButton("Launch special Chrome instance")
         
-        self.info_other = QLabel("Traffic other applications by the path to the program below (followed by any arguments needed):") 
+        self.info_other = QLabel("Traffic other applications by writing the path to the program below (followed by any arguments needed):") 
         self.program = QLineEdit("Program to launch")
         self.launch = QPushButton("Launch!")
         

@@ -254,9 +254,21 @@ class LaunchApp(QDialog):
     def launch_program(self):
         """Tunnel programs which do not have SOCKS proxy settings, uses tsocks.
         """
-        args = self.program.text().split(' ')
-        args.insert(0,"tsocks")
-        subprocess.Popen(args)
+        args = self.program.text()
+        args = shlex.quote(args)
+        
+        #Figure out which terminal we will use to launch the application,
+        #gnome-terminal or xterm must be installed otherwise console-based applications may not work
+        gt = subprocess.Popen("apt-cache policy gnome-terminal", shell = True, universal_newlines = True, stdout=PIPE)
+        stdout, stderr = gt.communicate()
+        if "(none)" not in stdout:
+            subprocess.Popen("gnome-terminal -x tsocks " + args, shell=True, universal_newlines = True)
+        else:          
+            subprocess.Popen("xterm -e tsocks " + args, shell=True, universal_newlines = True)
+                
+    
+            
+            
         
     def launch_chrome_instance(self):
         """Kill all chrome instances and launch a new instance with

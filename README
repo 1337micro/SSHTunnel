@@ -16,7 +16,8 @@ Install on other systems, or alternate installation for failed installs:
         tsocks v1.8+ recommended (http://tsocks.sourceforge.net/download.php OR try your distro repos!),
         python3, 
         python3-pyside, 
-        openSSH, 
+        openSSH,
+	gnome-terminal or xterm (needed to tunnel console based applications apart from browsers but technically optional)
         firefox and/or google-chrome (optional but HIGHLY recommended)
     2)
         If it hasn't been done already, 
@@ -67,7 +68,7 @@ server_port = 1080
 Usage:
     You need to have a server that allows you to ssh into it on port 22.
     
-    python3 /usr/bin/SSHTunnel.py 
+    python3 /opt/sshtunnel/SSHTunnel.py 
     Press the button which most describes your situation:
     
         If you have a VPS or server:

@@ -1,3 +1,11 @@
+sshtunnel (1.0-0ubuntu3) precise; urgency=medium
+
+  * Updating build
+  * 
+  * 
+
+ -- W P <williamap@gmail.com>  Fri, 19 June 2014 03:56:22 -0400
+
 sshtunnel (1.0-0ubuntu2) precise; urgency=medium
 
   * Updating build

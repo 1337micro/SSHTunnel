@@ -17,22 +17,14 @@ Usage:
     Press the button which most describes your situation:
     
         If you have a VPS or server:
-            Fill out the info on the next page and
-            Press Connect. Pay close attention to your terminal, 
-            you may be required to enter additional information to succesfuly connect.
+            Fill out the info on the next page and Press Connect. Pay close attention to your terminal, you may be required to enter additional information to succesfuly connect.
             
-            In the next window you will see the SOCKS
-            proxy information, you can either enter this information manually into your
-            browser settings or press one of the buttons
-            to launch a special instance of the browser. 
+            In the next window you will see the SOCKS proxy information, you can either enter this information manually into your browser settings or press one of the buttons to launch a special instance of the browser. 
     
-            You can also type a terminal command to tunnel any of your favorite
-            applications (especially those which don't allow you to modify proxy
-            settings)
+            You can also type a terminal command to tunnel any of your favorite applications (even those which don't allow you to modify proxy settings)
         
         If you don't have a VPS or server:
-            A webview will be shown, please purchase one and return to the application
-            when you are ready.
+            A webview will be shown, please purchase one and return to the application when you are ready.
 
 Tested on:
     ubuntu 12.04+ python 3.2+ tsocks 1.8

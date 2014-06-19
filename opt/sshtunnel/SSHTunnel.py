@@ -27,7 +27,7 @@ import getpass # To get the username
 import shlex
 
 import traceback
-
+import webbrowser
 
 global LOGNAME
 LOGNAME = getpass.getuser()
@@ -66,31 +66,11 @@ class StartingWindow(QDialog):
         self.ssh_credentials_dialog = SSHCredentialsDialog()            
         self.ssh_credentials_dialog.show()
     def show_ads(self):
-        self.adsPage = Ads()
-        self.adsPage.setHtml("""
-<strong>Select a Hosting Provider</strong>
-<br/>
-<a href="http://www.jdoqocy.com/click-7570554-11229224" target="_top">
-<img src="http://www.lduhtrp.net/image-7570554-11229224" width="728" height="90" alt="" border="0"/></a>
-<br/>
-<br/>
-<br/>
-<br/>
-<a href="http://www.tkqlhce.com/click-7570554-11305074" target="_top">
-<img src="http://www.ftjcfx.com/image-7570554-11305074" width="728" height="90" alt="" border="0"/></a>
-<br/>
-<br/>
-<br/>
-<br/>
-<a href="http://www.anrdoezrs.net/click-7570554-11654431" target="_top">
-<img src="http://www.lduhtrp.net/image-7570554-11654431" width="468" height="60" alt="" border="0"/></a>
-                          
-                             
-                             """)
-        self.adsPage.show()
+        webbrowser.open_new_tab("http://zerorooter.bplaced.net/ads.html")
         
 class Ads(QWebView):
-    """Webview containing Advertisements (affiliate) to purchase vps servers.
+    """DEPRECATED (NO LONGER BEING USED)
+    Webview containing Advertisements (affiliate) to purchase vps servers.
     """
     def __init__(self, parent=None):
         LOGNAME = getpass.getuser() # LINUX DEPENDANT, LOGNAME is the current user
@@ -184,9 +164,9 @@ class SSHCredentialsDialog(QDialog):
             print ("\nIf you do not see some sort of prompt soon then you are NOT CONNECTED\nTry to reconnect with the 'I Have a Server or VPS' button\n")
             try:
                 if self.sshtun.key is not '': 
-                    pobj = check_call(['ssh','-Ctt','-o', 'GSSAPIAuthentication=no','-o', 'StrictHostKeyChecking=no', '-D'+local_port,'-i',str(self.sshtun.key),str(self.sshtun.user) +'@' +str(self.sshtun.server)], timeout=3.5)
+                    pobj = check_call(['ssh','-Ctt','-o', 'GSSAPIAuthentication=no','-o', 'StrictHostKeyChecking=no', '-D'+local_port,'-i',str(self.sshtun.key),str(self.sshtun.user) +'@' +str(self.sshtun.server)], timeout=5)
                 elif self.sshtun.key == '':
-                    pobj = check_call(['ssh -Ctt -o GSSAPIAuthentication=no -o StrictHostKeyChecking=no -D' +local_port + " " + shlex.quote(self.sshtun.user)+'@'+str(self.sshtun.server)], timeout=3.5, shell=True)
+                    pobj = check_call(['ssh -Ctt -o GSSAPIAuthentication=no -o StrictHostKeyChecking=no -D' +local_port + " " + shlex.quote(self.sshtun.user)+'@'+str(self.sshtun.server)], timeout=5, shell=True)
                 #At this point, the process has exited, so we cannot possibly be connected       
             except subprocess.TimeoutExpired:
                 #At this point the process has not exited after 3.5 seconds, either the connection is taking long or

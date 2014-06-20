@@ -41,15 +41,11 @@ class StartingWindow(QDialog):
         if LOGNAME == 'root':
             print("DO NOT RUN THE APPLICATION AS ROOT")
             sys.exit(0)
-<<<<<<< HEAD
         
         #set_tsocks_conf_envvar()
         #Modify the tsocks configuration file in home dir.
         #modify_tsocks_conf()
         
-=======
-            
->>>>>>> 35e50b4a07f33ded1c4156927ea8ba7d272ec0a7
         # Create a Label and show it
         self.label = QLabel("<em>Hide your identity online</em>")
         
@@ -169,7 +165,6 @@ class SSHCredentialsDialog(QDialog):
             Popen(['fuser', '-k', '1080/tcp']) # Kills all tcp on 1080
             os.system('clear')
             
-<<<<<<< HEAD
             print ("\nPAY ATTENTION TO THE TERMINAL, YOU MAY HAVE TO ENTER YOU'RE PASSWORD IF YOU ARE NOT USING A KEY-FILE\nIf nothing happens try to reconnect with the 'I Have a Server or VPS' button\n\n")
             
             if self.sshtun.key is not '': 
@@ -179,15 +174,6 @@ class SSHCredentialsDialog(QDialog):
                 while (time.time() != (c_time+4)): # pause for 4 seconds
                     pass
                 """
-=======
-            print ("\nIf you do not see some sort of prompt soon then you are NOT CONNECTED\nTry to reconnect with the 'I Have a Server or VPS' button\n\n")
-            
-            if self.sshtun.key is not '': 
-                pobj = Popen(['ssh','-Ctt','-o', 'GSSAPIAuthentication=no','-o', 'StrictHostKeyChecking=no', '-D'+local_port,'-i',str(self.sshtun.key),str(self.sshtun.user) +'@' +str(self.sshtun.server)])
-                c_time = time.time()
-                while (time.time() != (c_time+4)): # pause for 4 seconds
-                    pass
->>>>>>> 35e50b4a07f33ded1c4156927ea8ba7d272ec0a7
                 if pobj.poll() == None:
                     #Process hasn't terminated yet, so we are probably connected
                     starting_window.ssh_credentials_dialog.hide() #Hide the server form window
@@ -199,17 +185,11 @@ class SSHCredentialsDialog(QDialog):
                     
             elif self.sshtun.key == '':
                 pobj = Popen(['ssh -Ctt -o GSSAPIAuthentication=no -o StrictHostKeyChecking=no -D' +local_port + " " + shlex.quote(self.sshtun.user)+'@'+str(self.sshtun.server)], shell=True)
-<<<<<<< HEAD
                 """
                 c_time = time.time()
                 while (time.time() < (c_time+4)): # pause for 4 seconds, regular sleep() wasn't fucking sleeping
                     pass
                     """
-=======
-                c_time = time.time()
-                while (time.time() < (c_time+4)): # pause for 4 seconds
-                    pass
->>>>>>> 35e50b4a07f33ded1c4156927ea8ba7d272ec0a7
                 if pobj.poll() == None:
                     #Process hasn't terminated yet, so we are probably connected
                     starting_window.ssh_credentials_dialog.hide() #Hide the server form window
@@ -285,7 +265,6 @@ class LaunchApp(QDialog):
         args = self.program.text()
         args = shlex.quote(args)
         
-<<<<<<< HEAD
         #set_tsocks_conf_envvar() # Probably not necessary since we already set it in the startingwindow __init__()
         #modify_tsocks_conf()   #also probably uncessary
         #Figure out which terminal we will use to launch the application,
@@ -305,20 +284,6 @@ class LaunchApp(QDialog):
         else:
             #Run it in same terminal
             subprocess.Popen("tsocks " + args, shell=True, universal_newlines = True)
-=======
-        #Figure out which terminal we will use to launch the application,
-        #gnome-terminal or xterm must be installed otherwise console-based applications may not work
-        gt = subprocess.Popen("apt-cache policy gnome-terminal", shell = True, universal_newlines = True, stdout=PIPE)
-        stdout, stderr = gt.communicate()
-        if "(none)" not in stdout:
-            subprocess.Popen("gnome-terminal -x tsocks " + args, shell=True, universal_newlines = True)
-        else:          
-            subprocess.Popen("xterm -e tsocks " + args, shell=True, universal_newlines = True)
-                
-    
-            
-            
->>>>>>> 35e50b4a07f33ded1c4156927ea8ba7d272ec0a7
         
     def launch_chrome_instance(self):
         """Kill all chrome instances and launch a new instance with
@@ -519,7 +484,6 @@ def save_ssh_credentials(user,server,key):
     credentials.write(server+"\n")
     credentials.write(key+"\n")
     credentials.close()
-<<<<<<< HEAD
     
     
 def set_tsocks_conf_envvar():
@@ -577,8 +541,6 @@ server_port = 1080"""
 
 
 
-=======
->>>>>>> 35e50b4a07f33ded1c4156927ea8ba7d272ec0a7
 
 # Mumbo jumbo to start the application:
 app = QApplication(sys.argv)

@@ -1,0 +1,30 @@
+sshtunnel (1.0-0ubuntu4) precise; urgency=medium
+
+  * Changed the postinst script such that the server in the server path in /etc/tsocks.conf is now 127.0.0.1, this should fix connection issues with tsocks
+  * Made the permissions of postinst 0755, and the owner root
+  * 
+
+ -- W P <williamap@gmail.com>  Fri, 19 June 2014 10:11:22 -0400
+
+sshtunnel (1.0-0ubuntu3) precise; urgency=medium
+
+  * Updating build
+  * 
+  * 
+
+ -- W P <williamap@gmail.com>  Fri, 19 June 2014 03:56:22 -0400
+
+sshtunnel (1.0-0ubuntu2) precise; urgency=medium
+
+  * Updating build
+  * 
+  * 
+
+ -- W P <williamap@gmail.com>  Fri, 18 June 2014 02:32:22 -0400
+
+sshtunnel (1.0-0ubuntu1) UNRELEASED; urgency=medium
+  
+  * Initial release. (Closes: #XXXXXX)
+  * 
+
+ -- W P <williamap@gmail.com>  Fri, 16 May 2014 18:24:22 -0400

@@ -1,3 +1,11 @@
+sshtunnel (1.5-0ubuntu5) precise; urgency=medium
+
+  * Change the postinst script such that the entire path{} block is removed
+  * FIXED TSOCKS: added a new line in the postinst script at the very end so that the parser in tsocks will register 1080 and not 108
+  * 
+
+ -- W P <williamap@gmail.com>  Fri, 20 June 2014 19:14:30 -0500
+
 sshtunnel (1.0-0ubuntu4) precise; urgency=medium
 
   * Changed the postinst script such that the server in the server path in /etc/tsocks.conf is now 127.0.0.1, this should fix connection issues with tsocks

@@ -3,9 +3,10 @@ Purpose: Tunnel your browser or other applications through a remote server with 
 
 Install:
 On debian-based systems:
-    dpkg -b 'path_to_directory_containing_DEBIAN_and_usr_folders'
-    sudo dpkg -i sshtunnel.deb
-    You can then execute the command python3 /opt/sshtunnel/SSHTunnel.py to run the application
+    git clone https://github.com/zeroRooter/SSHTunnel.git
+    dpkg -b SSHTunnel/
+    sudo dpkg -i SSHTunnel.deb
+    You can then execute the command python3 /opt/sshtunnel/SSHTunnel.py to run the application or you can use the launcher (search sshtunnel)
 
 Install on other systems, or alternate installation for failed installs:
     Coming soon...

@@ -1,0 +1,42 @@
+
+Purpose: Tunnel your browser or other applications through a remote server with openSSH, in order to stay anonymous online
+
+Install:
+On debian-based systems:
+    dpkg -b 'path_to_directory_containing_DEBIAN_and_usr_folders'
+    sudo dpkg -i sshtunnel.deb
+    You can then execute the command python3 /opt/sshtunnel/SSHTunnel.py to run the application
+
+Install on other systems, or alternate installation for failed installs:
+    Coming soon...
+    
+Usage:
+    You need to have a server that allows you to ssh into it on port 22.
+    
+    python3 /opt/sshtunnel/SSHTunnel.py 
+    Press the button which most describes your situation:
+    
+        If you have a VPS or server:
+            Fill out the info on the next page and
+            Press Connect. Pay close attention to your terminal, 
+            you may be required to enter additional information to succesfuly connect.
+            
+            In the next window you will see the SOCKS
+            proxy information, you can either enter this information manually into your
+            browser settings or press one of the buttons
+            to launch a special instance of the browser. 
+    
+            You can also type a terminal command to tunnel any of your favorite
+            applications (especially those which don't allow you to modify proxy
+            settings)
+        
+        If you don't have a VPS or server:
+            A webview will be shown, please purchase one and return to the form later
+            (disclaimer: these are affiliate links)
+        
+
+Tested on:
+    ubuntu 12.04+ python 3.2+ tsocks 1.8
+
+
+    

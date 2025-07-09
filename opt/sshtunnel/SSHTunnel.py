@@ -542,7 +542,7 @@ server_port = 1080"""
 
 
 
-# Mumbo jumbo to start the application:
+# Start the application:
 app = QApplication(sys.argv)
 starting_window = StartingWindow()
 starting_window.show()
@@ -552,28 +552,3 @@ app.exec_()
 
 sys.exit()
 
-
-
-
-
-
-
-#Crapola
-
-"""
-                LINOE 203 177
-                prestdin_time = time.time()
-                pobj.stdin.write(bytes('yes', 'UTF-8'))#For the initial setup certificate
-                pobj.stdin.close()
-                
-                sys.stdout.flush()
-                line = pobj.stdout.readline()#Blocking, On bad ip? ISSUE
-                
-                
-                while bytes('Welcome', 'UTF-8') not in line and line != bytes('', 'UTF-8'):
-                    if(time.time() - prestdin_time > 5.0):
-                        raise Exception("Connection taking too long")
-                    sys.stdout.flush()
-                    line = pobj.stdout.readline()
-                """
-                #

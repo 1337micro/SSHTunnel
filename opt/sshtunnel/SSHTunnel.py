@@ -265,9 +265,6 @@ class LaunchApp(QDialog):
         args = self.program.text()
         args = shlex.quote(args)
         
-        #set_tsocks_conf_envvar() # Probably not necessary since we already set it in the startingwindow __init__()
-        #modify_tsocks_conf()   #also probably uncessary
-        #Figure out which terminal we will use to launch the application,
         #gnome-terminal or xterm must be installed otherwise console-based applications may not work
         ap_gt = subprocess.Popen("apt-cache policy gnome-terminal", shell = True, universal_newlines = True, stdout=PIPE)
         ap_gtstdout, stderr = ap_gt.communicate()

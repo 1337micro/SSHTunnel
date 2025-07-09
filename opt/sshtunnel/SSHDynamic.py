@@ -23,24 +23,3 @@ class SSHDynamic(SSHTunnelBaseClass):
         """
         self.password = password
         self.port = port
-        
-        
-        
-        
-        
-        
-        
-# GARBAGE AREA:
-"""
-tun1 = SSHDynamic("ubuntu",
-                  "ec2-54-187-203-101.us-west-2.compute.amazonaws.com",
-                  "/home/bluezone/amazon_ubuntu_key.pem",
-                  "wine /home/bluezone/.wine/drive_c/ProgramFiles/DiabloII/DiabloII.exe -w")
-
-"""
-
-
-
-# super([type[, object-or-type]])
-        #A type is anything that can be defined as a Class, and an object is
-        #anything
